@@ -1,0 +1,19 @@
+# Define the namespace where Superset will be installed
+namespace: superset
+
+# Database configuration
+postgresql:
+  postgresqlUsername: supersetpostgres
+  postgresqlPassword: SuperPGadmin@2024
+  postgresqlDatabase: superset
+
+configOverrides:
+  secret: |
+    SECRET_KEY = 'mi5QlYtIyl23yzvdPnno7vJgnG2fiAdiFfffJXpJxtRZYrc4aX1Tcc2X'
+
+
+bootstrapScript: |
+  #!/bin/bash
+  pip install psycopg2 \
+    pip install pyhive &&\
+  if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi

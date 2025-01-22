@@ -1,0 +1,8 @@
+---
+name: apache superset
+title: "Apache Superset"
+version: "4.0.1"
+maintainer: "@jhsundaram"
+description: Apche Superset is the a powerful data visualization tool enabling organizations to harness real-time data insights and sophisticated analytics.
+url: https://superset.apache.org/
+category: management

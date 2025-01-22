@@ -1,0 +1,29 @@
+apiVersion: v1
+data:
+  _example: "################################\n#                              #\n\
+    #    EXAMPLE CONFIGURATION     #\n#                              #\n################################\n\
+    \n# This block is not actually functional configuration,\n# but serves to illustrate\
+    \ the available configuration\n# options and document them in a way that is accessible\n\
+    # to users that `kubectl edit` this config map.\n#\n# These sample configuration\
+    \ options may be copied out of\n# this example block and unindented to be in the\
+    \ data block\n# to actually change the configuration.\n\n# Default value for domain.\n\
+    # Routes having the cluster domain suffix (by default 'svc.cluster.local')\n#\
+    \ will not be exposed through Ingress. You can define your own label\n# selector\
+    \ to assign that domain suffix to your Route here, or you can set\n# the label\n\
+    #    \"networking.knative.dev/visibility=cluster-local\"\n# to achieve the same\
+    \ effect.  This shows how to make routes having\n# the label app=secret only exposed\
+    \ to the local cluster.\nsvc.cluster.local: |\n  selector:\n    app: secret\n\n\
+    # These are example settings of domain.\n# example.com will be used for all routes,\
+    \ but it is the least-specific rule so it\n# will only be used if no other domain\
+    \ matches.\nexample.com: |\n\n# example.org will be used for routes having app=nonprofit.\n\
+    example.org: |\n  selector:\n    app: nonprofit\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    knative.dev/example-checksum: 26c09de5
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: knative-serving
+    app.kubernetes.io/version: 1.8.0
+  name: config-domain
+  namespace: knative-serving

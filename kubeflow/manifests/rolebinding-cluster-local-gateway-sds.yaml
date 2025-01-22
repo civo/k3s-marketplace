@@ -1,0 +1,18 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    install.operator.istio.io/owning-resource: unknown
+    istio.io/rev: default
+    operator.istio.io/component: IngressGateways
+    release: istio
+  name: cluster-local-gateway-sds
+  namespace: istio-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cluster-local-gateway-sds
+subjects:
+- kind: ServiceAccount
+  name: cluster-local-gateway-service-account
+  namespace: istio-system

@@ -1,3 +1,7 @@
 #!/bin/bash
 
-while ! kubectl apply -f https://raw.githubusercontent.com/civo/kubernetes-marketplace/master/kubeflow/kubeflow.yaml; do echo "Retrying to apply resources"; sleep 10; done
+# create the definitions of custom resources before they're needed
+kubectl apply -f crds
+
+# install everything remaining including custom resources
+kubectl apply -f manifests

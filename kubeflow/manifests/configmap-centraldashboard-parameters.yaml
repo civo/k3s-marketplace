@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  CD_CLUSTER_DOMAIN: cluster.local
+  CD_REGISTRATION_FLOW: 'false'
+  CD_USERID_HEADER: kubeflow-userid
+  CD_USERID_PREFIX: ''
+kind: ConfigMap
+metadata:
+  labels:
+    app: centraldashboard
+    app.kubernetes.io/component: centraldashboard
+    app.kubernetes.io/name: centraldashboard
+    kustomize.component: centraldashboard
+  name: centraldashboard-parameters
+  namespace: kubeflow

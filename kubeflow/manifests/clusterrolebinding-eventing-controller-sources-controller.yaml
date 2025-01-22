@@ -1,0 +1,18 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: knative-eventing
+    app.kubernetes.io/name: knative-eventing
+    app.kubernetes.io/version: 1.8.1
+    eventing.knative.dev/release: v1.8.1
+    kustomize.component: knative
+  name: eventing-controller-sources-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: knative-eventing-sources-controller
+subjects:
+- kind: ServiceAccount
+  name: eventing-controller
+  namespace: knative-eventing

@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: notebook-controller
+    kustomize.component: notebook-controller
+  name: notebook-controller-deployment
+  namespace: kubeflow
+spec:
+  selector:
+    matchLabels:
+      app: notebook-controller
+      kustomize.component: notebook-controller
+  template:
+    metadata:
+      labels:
+        app: notebook-controller
+        kustomize.component: notebook-controller
+    spec:
+      containers:
+      - command:
+        - /manager
+        env:
+        - name: USE_ISTIO
+          valueFrom:
+            configMapKeyRef:
+              key: USE_ISTIO
+              name: notebook-controller-config-dm5b6dd458
+        - name: ISTIO_GATEWAY
+          valueFrom:
+            configMapKeyRef:
+              key: ISTIO_GATEWAY
+              name: notebook-controller-config-dm5b6dd458
+        - name: CLUSTER_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              key: CLUSTER_DOMAIN
+              name: notebook-controller-config-dm5b6dd458
+        - name: ENABLE_CULLING
+          valueFrom:
+            configMapKeyRef:
+              key: ENABLE_CULLING
+              name: notebook-controller-config-dm5b6dd458
+        - name: CULL_IDLE_TIME
+          valueFrom:
+            configMapKeyRef:
+              key: CULL_IDLE_TIME
+              name: notebook-controller-config-dm5b6dd458
+        - name: IDLENESS_CHECK_PERIOD
+          valueFrom:
+            configMapKeyRef:
+              key: IDLENESS_CHECK_PERIOD
+              name: notebook-controller-config-dm5b6dd458
+        image: docker.io/kubeflownotebookswg/notebook-controller:v1.7.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8081
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        name: manager
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8081
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      serviceAccountName: notebook-controller-service-account

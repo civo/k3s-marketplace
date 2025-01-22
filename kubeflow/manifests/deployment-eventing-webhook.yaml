@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: knative-eventing
+    app.kubernetes.io/name: knative-eventing
+    app.kubernetes.io/version: 1.8.1
+    eventing.knative.dev/release: v1.8.1
+    kustomize.component: knative
+  name: eventing-webhook
+  namespace: knative-eventing
+spec:
+  selector:
+    matchLabels:
+      app: eventing-webhook
+      app.kubernetes.io/component: knative-eventing
+      app.kubernetes.io/name: knative-eventing
+      kustomize.component: knative
+      role: eventing-webhook
+  template:
+    metadata:
+      labels:
+        app: eventing-webhook
+        app.kubernetes.io/component: knative-eventing
+        app.kubernetes.io/name: knative-eventing
+        app.kubernetes.io/version: 1.8.1
+        eventing.knative.dev/release: v1.8.1
+        kustomize.component: knative
+        role: eventing-webhook
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: eventing-webhook
+                  app.kubernetes.io/component: knative-eventing
+                  app.kubernetes.io/name: knative-eventing
+                  kustomize.component: knative
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      containers:
+      - env:
+        - name: SYSTEM_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: CONFIG_LOGGING_NAME
+          value: config-logging
+        - name: METRICS_DOMAIN
+          value: knative.dev/eventing
+        - name: WEBHOOK_NAME
+          value: eventing-webhook
+        - name: WEBHOOK_PORT
+          value: '8443'
+        - name: SINK_BINDING_SELECTION_MODE
+          value: exclusion
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        image: gcr.io/knative-releases/knative.dev/eventing/cmd/webhook@sha256:d217ab7e3452a87f8cbb3b45df65c98b18b8be39551e3e960cd49ea44bb415ba
+        livenessProbe:
+          httpGet:
+            httpHeaders:
+            - name: k-kubelet-probe
+              value: webhook
+            port: 8443
+            scheme: HTTPS
+          initialDelaySeconds: 120
+          periodSeconds: 1
+        name: eventing-webhook
+        ports:
+        - containerPort: 8443
+          name: https-webhook
+        - containerPort: 9090
+          name: metrics
+        - containerPort: 8008
+          name: profiling
+        readinessProbe:
+          httpGet:
+            httpHeaders:
+            - name: k-kubelet-probe
+              value: webhook
+            port: 8443
+            scheme: HTTPS
+          periodSeconds: 1
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        terminationMessagePolicy: FallbackToLogsOnError
+      enableServiceLinks: false
+      serviceAccountName: eventing-webhook
+      terminationGracePeriodSeconds: 300

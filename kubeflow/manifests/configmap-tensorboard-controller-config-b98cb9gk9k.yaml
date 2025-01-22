@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  ISTIO_GATEWAY: kubeflow/kubeflow-gateway
+  RWO_PVC_SCHEDULING: 'True'
+  TENSORBOARD_IMAGE: tensorflow/tensorflow:2.5.1
+kind: ConfigMap
+metadata:
+  name: tensorboard-controller-config-b98cb9gk9k
+  namespace: kubeflow

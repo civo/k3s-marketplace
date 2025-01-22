@@ -1,0 +1,45 @@
+apiVersion: v1
+data:
+  agent: "{\n    \"image\" : \"kserve/agent:v0.10.0\",\n    \"memoryRequest\": \"\
+    100Mi\",\n    \"memoryLimit\": \"1Gi\",\n    \"cpuRequest\": \"100m\",\n    \"\
+    cpuLimit\": \"1\"\n}"
+  batcher: "{\n    \"image\" : \"kserve/agent:v0.10.0\",\n    \"memoryRequest\": \"\
+    1Gi\",\n    \"memoryLimit\": \"1Gi\",\n    \"cpuRequest\": \"1\",\n    \"cpuLimit\"\
+    : \"1\"\n}"
+  credentials: "{\n   \"gcs\": {\n       \"gcsCredentialFileName\": \"gcloud-application-credentials.json\"\
+    \n   },\n   \"s3\": {\n       \"s3AccessKeyIDName\": \"AWS_ACCESS_KEY_ID\",\n\
+    \       \"s3SecretAccessKeyName\": \"AWS_SECRET_ACCESS_KEY\",\n       \"s3Endpoint\"\
+    : \"\",\n       \"s3UseHttps\": \"\",\n       \"s3Region\": \"\",\n       \"s3VerifySSL\"\
+    : \"\",\n       \"s3UseVirtualBucket\": \"\",\n       \"s3UseAnonymousCredential\"\
+    : \"\",\n       \"s3CABundle\": \"\"\n   }\n}"
+  deploy: "{\n  \"defaultDeploymentMode\": \"Serverless\"\n}"
+  explainers: "{\n    \"alibi\": {\n        \"image\" : \"kserve/alibi-explainer\"\
+    ,\n        \"defaultImageVersion\": \"latest\"\n    },\n    \"aix\": {\n     \
+    \   \"image\" : \"kserve/aix-explainer\",\n        \"defaultImageVersion\": \"\
+    latest\"\n    },\n    \"art\": {\n        \"image\" : \"kserve/art-explainer\"\
+    ,\n        \"defaultImageVersion\": \"latest\"\n    }\n}"
+  ingress: "{\n  \"ingressGateway\": \"kubeflow/kubeflow-gateway\",\n  \"ingressService\"\
+    : \"istio-ingressgateway.istio-system.svc.cluster.local\",\n  \"localGateway\"\
+    : \"knative-serving/knative-local-gateway\",\n  \"localGatewayService\": \"knative-local-gateway.istio-system.svc.cluster.local\"\
+    ,\n  \"ingressDomain\": \"example.com\",\n  \"ingressClassName\": \"istio\",\n\
+    \  \"domainTemplate\": \"{{ .Name }}-{{ .Namespace }}.{{ .IngressDomain }}\",\n\
+    \  \"urlScheme\": \"http\",\n  \"disableIstioVirtualHost\": false\n}"
+  logger: "{\n    \"image\" : \"kserve/agent:v0.10.0\",\n    \"memoryRequest\": \"\
+    100Mi\",\n    \"memoryLimit\": \"1Gi\",\n    \"cpuRequest\": \"100m\",\n    \"\
+    cpuLimit\": \"1\",\n    \"defaultUrl\": \"http://default-broker\"\n}"
+  metricsAggregator: "{\n  \"enableMetricAggregation\": \"false\",\n  \"enablePrometheusScraping\"\
+    \ : \"false\"\n}"
+  router: "{\n    \"image\" : \"kserve/router:v0.10.0\",\n    \"memoryRequest\": \"\
+    100Mi\",\n    \"memoryLimit\": \"1Gi\",\n    \"cpuRequest\": \"100m\",\n    \"\
+    cpuLimit\": \"1\"\n}"
+  storageInitializer: "{\n    \"image\" : \"kserve/storage-initializer:v0.10.0\",\n\
+    \    \"memoryRequest\": \"100Mi\",\n    \"memoryLimit\": \"1Gi\",\n    \"cpuRequest\"\
+    : \"100m\",\n    \"cpuLimit\": \"1\",\n    \"storageSpecSecretName\": \"storage-config\"\
+    \n}"
+kind: ConfigMap
+metadata:
+  labels:
+    app: kserve
+    app.kubernetes.io/name: kserve
+  name: inferenceservice-config
+  namespace: kubeflow

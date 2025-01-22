@@ -1,0 +1,93 @@
+apiVersion: v1
+data:
+  spawner_ui_config.yaml: "# Configuration file for the Jupyter UI.\n#\n# Each Jupyter\
+    \ UI option is configured by two keys: 'value' and 'readOnly'\n# - The 'value'\
+    \ key contains the default value\n# - The 'readOnly' key determines if the option\
+    \ will be available to users\n#\n# If the 'readOnly' key is present and set to\
+    \ 'true', the respective option\n# will be disabled for users and only set by\
+    \ the admin. Also when a\n# Notebook is POSTED to the API if a necessary field\
+    \ is not present then\n# the value from the config will be used.\n#\n# If the\
+    \ 'readOnly' key is missing (defaults to 'false'), the respective option\n# will\
+    \ be available for users to edit.\n#\n# Note that some values can be templated.\
+    \ Such values are the names of the\n# Volumes as well as their StorageClass\n\
+    spawnerFormDefaults:\n  image:\n    # The container Image for the user's Jupyter\
+    \ Notebook\n    value: kubeflownotebookswg/jupyter-scipy:v1.7.0\n    # The list\
+    \ of available standard container Images\n    options:\n    - kubeflownotebookswg/jupyter-scipy:v1.7.0\n\
+    \    - kubeflownotebookswg/jupyter-pytorch-full:v1.7.0\n    - kubeflownotebookswg/jupyter-pytorch-cuda-full:v1.7.0\n\
+    \    - kubeflownotebookswg/jupyter-tensorflow-full:v1.7.0\n    - kubeflownotebookswg/jupyter-tensorflow-cuda-full:v1.7.0\n\
+    \  imageGroupOne:\n    # The container Image for the user's Group One Server\n\
+    \    # The annotation `notebooks.kubeflow.org/http-rewrite-uri: /`\n    # is applied\
+    \ to notebook in this group, configuring\n    # the Istio rewrite for containers\
+    \ that host their web UI at `/`\n    value: kubeflownotebookswg/codeserver-python:v1.7.0\n\
+    \    # The list of available standard container Images\n    options:\n    - kubeflownotebookswg/codeserver-python:v1.7.0\n\
+    \  imageGroupTwo:\n    # The container Image for the user's Group Two Server\n\
+    \    # The annotation `notebooks.kubeflow.org/http-rewrite-uri: /`\n    # is applied\
+    \ to notebook in this group, configuring\n    # the Istio rewrite for containers\
+    \ that host their web UI at `/`\n    # The annotation `notebooks.kubeflow.org/http-headers-request-set`\n\
+    \    # is applied to notebook in this group, configuring Istio\n    # to add the\
+    \ `X-RStudio-Root-Path` header to requests\n    value: kubeflownotebookswg/rstudio-tidyverse:v1.7.0\n\
+    \    # The list of available standard container Images\n    options:\n    - kubeflownotebookswg/rstudio-tidyverse:v1.7.0\n\
+    \  # If true, hide registry and/or tag name in the image selection dropdown\n\
+    \  hideRegistry: true\n  hideTag: false\n  allowCustomImage: true\n  # If true,\
+    \ users can input custom images\n  # If false, users can only select from the\
+    \ images in this config\n  imagePullPolicy:\n    # Supported values: Always, IfNotPresent,\
+    \ Never\n    value: IfNotPresent\n    readOnly: false\n  cpu:\n    # CPU for user's\
+    \ Notebook\n    value: '0.5'\n    # Factor by with to multiply request to calculate\
+    \ limit\n    # if no limit is set, to disable set \"none\"\n    limitFactor: \"\
+    1.2\"\n    readOnly: false\n  memory:\n    # Memory for user's Notebook\n    value:\
+    \ 1.0Gi\n    # Factor by with to multiply request to calculate limit\n    # if\
+    \ no limit is set, to disable set \"none\"\n    limitFactor: \"1.2\"\n    readOnly:\
+    \ false\n  environment:\n    value: {}\n    readOnly: false\n  workspaceVolume:\n\
+    \    # Workspace Volume to be attached to user's Notebook\n    # If you don't\
+    \ want a workspace volume then delete the 'value' key\n    value:\n      mount:\
+    \ /home/jovyan\n      newPvc:\n        metadata:\n          name: '{notebook-name}-workspace'\n\
+    \        spec:\n          resources:\n            requests:\n              storage:\
+    \ 10Gi\n          accessModes:\n          - ReadWriteOnce\n    readOnly: false\n\
+    \  dataVolumes:\n    # List of additional Data Volumes to be attached to the user's\
+    \ Notebook\n    value: []\n    # For example, a list with 2 Data Volumes:\n  \
+    \  # value:\n    #   - mount: /home/jovyan/datavol-1\n    #     newPvc:\n    #\
+    \       metadata:\n    #         name: '{notebook-name}-datavol-1'\n    #    \
+    \   spec:\n    #         resources:\n    #           requests:\n    #        \
+    \     storage: 5Gi\n    #         accessModes:\n    #           - ReadWriteOnce\n\
+    \    #   - mount: /home/jovyan/datavol-1\n    #     existingSource:\n    #   \
+    \    persistentVolumeClaim:\n    #         claimName: test-pvc\n    readOnly:\
+    \ false\n  gpus:\n    # Number of GPUs to be assigned to the Notebook Container\n\
+    \    value:\n      # values: \"none\", \"1\", \"2\", \"4\", \"8\"\n      num:\
+    \ \"none\"\n      # Determines what the UI will show and send to the backend\n\
+    \      vendors:\n      - limitsKey: \"nvidia.com/gpu\"\n        uiName: \"NVIDIA\"\
+    \n      - limitsKey: \"amd.com/gpu\"\n        uiName: \"AMD\"\n      # Values:\
+    \ \"\" or a `limits-key` from the vendors list\n      vendor: \"\"\n    readOnly:\
+    \ false\n  affinityConfig:\n    # If readonly, the default value will be the only\
+    \ option\n    # value is a list of `configKey`s that we want to be selected by\
+    \ default\n    value: \"\"\n    # The list of available affinity configs\n   \
+    \ options: []\n    #options:\n    #  - configKey: \"exclusive__n1-standard-2\"\
+    \n    #    displayName: \"Exclusive: n1-standard-2\"\n    #    affinity:\n   \
+    \ #      # (Require) Node having label: `node_pool=notebook-n1-standard-2`\n \
+    \   #      nodeAffinity:\n    #        requiredDuringSchedulingIgnoredDuringExecution:\n\
+    \    #          nodeSelectorTerms:\n    #            - matchExpressions:\n   \
+    \ #                - key: \"node_pool\"\n    #                  operator: \"In\"\
+    \n    #                  values:\n    #                   - \"notebook-n1-standard-2\"\
+    \n    #      # (Require) Node WITHOUT existing Pod having label: `notebook-name`\n\
+    \    #      podAntiAffinity:\n    #        requiredDuringSchedulingIgnoredDuringExecution:\n\
+    \    #          - labelSelector:\n    #              matchExpressions:\n    #\
+    \                - key: \"notebook-name\"\n    #                  operator: \"\
+    Exists\"\n    #            namespaces: []\n    #            topologyKey: \"kubernetes.io/hostname\"\
+    \n    #readOnly: false\n  tolerationGroup:\n    # The default `groupKey` from\
+    \ the options list\n    # If readonly, the default value will be the only option\n\
+    \    value: \"\"\n    # The list of available tolerationGroup configs\n    options:\
+    \ []\n    #options:\n    #  - groupKey: \"group_1\"\n    #    displayName: \"\
+    Group 1: description\"\n    #    tolerations:\n    #      - key: \"key1\"\n  \
+    \  #        operator: \"Equal\"\n    #        value: \"value1\"\n    #       \
+    \ effect: \"NoSchedule\"\n    #      - key: \"key2\"\n    #        operator: \"\
+    Equal\"\n    #        value: \"value2\"\n    #        effect: \"NoSchedule\"\n\
+    \    readOnly: false\n  shm:\n    value: true\n    readOnly: false\n  configurations:\n\
+    \    # List of labels to be selected, these are the labels from PodDefaults\n\
+    \    # value:\n    #   - add-gcp-secret\n    #   - default-editor\n    value:\
+    \ []\n    readOnly: false\n"
+kind: ConfigMap
+metadata:
+  labels:
+    app: jupyter-web-app
+    kustomize.component: jupyter-web-app
+  name: jupyter-web-app-config-84khm987mh
+  namespace: kubeflow

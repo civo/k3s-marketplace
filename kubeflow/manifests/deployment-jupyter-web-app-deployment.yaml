@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: jupyter-web-app
+    kustomize.component: jupyter-web-app
+  name: jupyter-web-app-deployment
+  namespace: kubeflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyter-web-app
+      kustomize.component: jupyter-web-app
+  template:
+    metadata:
+      labels:
+        app: jupyter-web-app
+        kustomize.component: jupyter-web-app
+    spec:
+      containers:
+      - env:
+        - name: APP_PREFIX
+          value: /jupyter
+        - name: UI
+          value: default
+        - name: USERID_HEADER
+          value: kubeflow-userid
+        - name: USERID_PREFIX
+          value: ''
+        - name: APP_SECURE_COOKIES
+          value: 'true'
+        image: docker.io/kubeflownotebookswg/jupyter-web-app:v1.7.0
+        name: jupyter-web-app
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: /etc/config
+          name: config-volume
+        - mountPath: /src/apps/default/static/assets/logos
+          name: logos-volume
+      serviceAccountName: jupyter-web-app-service-account
+      volumes:
+      - configMap:
+          name: jupyter-web-app-config-84khm987mh
+        name: config-volume
+      - configMap:
+          name: jupyter-web-app-logos
+        name: logos-volume

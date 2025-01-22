@@ -1,0 +1,9 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  labels:
+    app: cache-server-cert-manager
+  name: kfp-cache-selfsigned-issuer
+  namespace: kubeflow
+spec:
+  selfSigned: {}

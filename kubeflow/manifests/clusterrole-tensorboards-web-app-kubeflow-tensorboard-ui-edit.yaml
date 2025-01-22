@@ -1,0 +1,27 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: tensorboards-web-app
+    kustomize.component: tensorboards-web-app
+    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-edit: 'true'
+  name: tensorboards-web-app-kubeflow-tensorboard-ui-edit
+rules:
+- apiGroups:
+  - tensorboard.kubeflow.org
+  resources:
+  - tensorboards
+  - tensorboards/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - delete
+- apiGroups:
+  - kubeflow.org
+  resources:
+  - poddefaults
+  verbs:
+  - get
+  - list
+  - watch

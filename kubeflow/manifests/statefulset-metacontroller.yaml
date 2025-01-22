@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: metacontroller
+    application-crd-id: kubeflow-pipelines
+    kustomize.component: metacontroller
+  name: metacontroller
+  namespace: kubeflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metacontroller
+      application-crd-id: kubeflow-pipelines
+      kustomize.component: metacontroller
+  serviceName: ''
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'false'
+      labels:
+        app: metacontroller
+        application-crd-id: kubeflow-pipelines
+        kustomize.component: metacontroller
+    spec:
+      containers:
+      - command:
+        - /usr/bin/metacontroller
+        - --zap-log-level=4
+        - --discovery-interval=3600s
+        image: docker.io/metacontrollerio/metacontroller:v2.0.4
+        name: metacontroller
+        resources:
+          limits:
+            cpu: '1'
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+      serviceAccountName: meta-controller-service
+  volumeClaimTemplates: []

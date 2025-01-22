@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: tensorboards-web-app
+    kustomize.component: tensorboards-web-app
+  name: tensorboards-web-app-cluster-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tensorboards-web-app-cluster-role
+subjects:
+- kind: ServiceAccount
+  name: tensorboards-web-app-service-account
+  namespace: kubeflow

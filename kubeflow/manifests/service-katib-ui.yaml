@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    katib.kubeflow.org/component: ui
+  name: katib-ui
+  namespace: kubeflow
+spec:
+  ports:
+  - name: ui
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    katib.kubeflow.org/component: ui
+  type: ClusterIP

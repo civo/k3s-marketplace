@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: volumes-web-app
+    kustomize.component: volumes-web-app
+    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-admin: 'true'
+  name: volumes-web-app-kubeflow-volume-ui-admin
+rules: []

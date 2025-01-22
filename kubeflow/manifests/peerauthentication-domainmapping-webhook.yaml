@@ -1,0 +1,17 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  labels:
+    app.kubernetes.io/component: net-istio
+    app.kubernetes.io/name: knative-serving
+    app.kubernetes.io/version: 1.8.0
+    networking.knative.dev/ingress-provider: istio
+  name: domainmapping-webhook
+  namespace: knative-serving
+spec:
+  portLevelMtls:
+    '8443':
+      mode: PERMISSIVE
+  selector:
+    matchLabels:
+      app: domainmapping-webhook

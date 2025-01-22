@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ml-pipeline-persistenceagent
+    app.kubernetes.io/component: ml-pipeline
+    app.kubernetes.io/name: kubeflow-pipelines
+    application-crd-id: kubeflow-pipelines
+  name: ml-pipeline-persistenceagent
+  namespace: kubeflow
+spec:
+  selector:
+    matchLabels:
+      app: ml-pipeline-persistenceagent
+      app.kubernetes.io/component: ml-pipeline
+      app.kubernetes.io/name: kubeflow-pipelines
+      application-crd-id: kubeflow-pipelines
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
+      labels:
+        app: ml-pipeline-persistenceagent
+        app.kubernetes.io/component: ml-pipeline
+        app.kubernetes.io/name: kubeflow-pipelines
+        application-crd-id: kubeflow-pipelines
+    spec:
+      containers:
+      - env:
+        - name: NAMESPACE
+          value: ''
+        - name: KUBEFLOW_USERID_HEADER
+          value: kubeflow-userid
+        - name: KUBEFLOW_USERID_PREFIX
+          value: ''
+        - name: TTL_SECONDS_AFTER_WORKFLOW_FINISH
+          value: '86400'
+        - name: NUM_WORKERS
+          value: '2'
+        envFrom:
+        - configMapRef:
+            name: persistenceagent-config-hkgkmd64bh
+        image: gcr.io/ml-pipeline/persistenceagent:2.0.0-alpha.7
+        imagePullPolicy: IfNotPresent
+        name: ml-pipeline-persistenceagent
+        resources:
+          requests:
+            cpu: 120m
+            memory: 500Mi
+      serviceAccountName: ml-pipeline-persistenceagent

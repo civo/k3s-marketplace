@@ -1,0 +1,32 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  labels:
+    app.kubernetes.io/component: domain-mapping
+    app.kubernetes.io/name: knative-serving
+    app.kubernetes.io/version: 1.8.0
+  name: webhook.domainmapping.serving.knative.dev
+webhooks:
+- admissionReviewVersions:
+  - v1
+  - v1beta1
+  clientConfig:
+    service:
+      name: domainmapping-webhook
+      namespace: knative-serving
+  failurePolicy: Fail
+  name: webhook.domainmapping.serving.knative.dev
+  rules:
+  - apiGroups:
+    - serving.knative.dev
+    apiVersions:
+    - '*'
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - domainmappings
+    - domainmappings/status
+    scope: '*'
+  sideEffects: None
+  timeoutSeconds: 10

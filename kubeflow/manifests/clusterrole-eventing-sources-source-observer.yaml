@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: knative-eventing
+    app.kubernetes.io/name: knative-eventing
+    app.kubernetes.io/version: 1.8.1
+    duck.knative.dev/source: 'true'
+    eventing.knative.dev/release: v1.8.1
+    kustomize.component: knative
+  name: eventing-sources-source-observer
+rules:
+- apiGroups:
+  - sources.knative.dev
+  resources:
+  - apiserversources
+  - pingsources
+  - sinkbindings
+  - containersources
+  verbs:
+  - get
+  - list
+  - watch

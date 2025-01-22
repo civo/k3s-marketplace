@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: centraldashboard
+    app.kubernetes.io/component: centraldashboard
+    app.kubernetes.io/name: centraldashboard
+    kustomize.component: centraldashboard
+  name: centraldashboard
+  namespace: kubeflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: centraldashboard
+      app.kubernetes.io/component: centraldashboard
+      app.kubernetes.io/name: centraldashboard
+      kustomize.component: centraldashboard
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
+      labels:
+        app: centraldashboard
+        app.kubernetes.io/component: centraldashboard
+        app.kubernetes.io/name: centraldashboard
+        kustomize.component: centraldashboard
+    spec:
+      containers:
+      - env:
+        - name: USERID_HEADER
+          value: kubeflow-userid
+        - name: USERID_PREFIX
+          value: ''
+        - name: PROFILES_KFAM_SERVICE_HOST
+          value: profiles-kfam.kubeflow
+        - name: REGISTRATION_FLOW
+          value: 'false'
+        - name: DASHBOARD_LINKS_CONFIGMAP
+          value: centraldashboard-config
+        - name: LOGOUT_URL
+          value: /authservice/logout
+        image: docker.io/kubeflownotebookswg/centraldashboard:v1.7.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8082
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        name: centraldashboard
+        ports:
+        - containerPort: 8082
+          protocol: TCP
+      serviceAccountName: centraldashboard

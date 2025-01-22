@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  viewer-pod-template.json: "{\n    \"spec\": {\n        \"serviceAccountName\": \"\
+    default-editor\"\n    }\n}"
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: ml-pipeline
+    app.kubernetes.io/name: kubeflow-pipelines
+    application-crd-id: kubeflow-pipelines
+  name: ml-pipeline-ui-configmap
+  namespace: kubeflow

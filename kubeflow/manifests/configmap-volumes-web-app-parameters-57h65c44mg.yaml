@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  VWA_APP_SECURE_COOKIES: 'true'
+  VWA_CLUSTER_DOMAIN: cluster.local
+  VWA_PREFIX: /volumes
+  VWA_USERID_HEADER: kubeflow-userid
+  VWA_USERID_PREFIX: ''
+kind: ConfigMap
+metadata:
+  labels:
+    app: volumes-web-app
+    kustomize.component: volumes-web-app
+  name: volumes-web-app-parameters-57h65c44mg
+  namespace: kubeflow

@@ -1,0 +1,10 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  labels:
+    app: kserve
+    app.kubernetes.io/name: kserve
+  name: selfsigned-issuer
+  namespace: kubeflow
+spec:
+  selfSigned: {}

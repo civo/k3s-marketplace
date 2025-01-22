@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: volumes-web-app
+    kustomize.component: volumes-web-app
+  name: volumes-web-app-deployment
+  namespace: kubeflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: volumes-web-app
+      kustomize.component: volumes-web-app
+  template:
+    metadata:
+      labels:
+        app: volumes-web-app
+        kustomize.component: volumes-web-app
+    spec:
+      containers:
+      - env:
+        - name: APP_PREFIX
+          value: /volumes
+        - name: USERID_HEADER
+          value: kubeflow-userid
+        - name: USERID_PREFIX
+          value: ''
+        - name: APP_SECURE_COOKIES
+          value: 'true'
+        image: docker.io/kubeflownotebookswg/volumes-web-app:v1.7.0
+        name: volumes-web-app
+        ports:
+        - containerPort: 5000
+      serviceAccountName: volumes-web-app-service-account

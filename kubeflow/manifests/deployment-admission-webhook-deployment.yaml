@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: poddefaults
+    app.kubernetes.io/component: poddefaults
+    app.kubernetes.io/name: poddefaults
+    kustomize.component: poddefaults
+  name: admission-webhook-deployment
+  namespace: kubeflow
+spec:
+  selector:
+    matchLabels:
+      app: poddefaults
+      app.kubernetes.io/component: poddefaults
+      app.kubernetes.io/name: poddefaults
+      kustomize.component: poddefaults
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'false'
+      labels:
+        app: poddefaults
+        app.kubernetes.io/component: poddefaults
+        app.kubernetes.io/name: poddefaults
+        kustomize.component: poddefaults
+    spec:
+      containers:
+      - args:
+        - --tlsCertFile=/etc/webhook/certs/tls.crt
+        - --tlsKeyFile=/etc/webhook/certs/tls.key
+        image: docker.io/kubeflownotebookswg/poddefaults-webhook:v1.7.0
+        name: admission-webhook
+        ports:
+        - containerPort: 4443
+          name: https-webhook
+        volumeMounts:
+        - mountPath: /etc/webhook/certs
+          name: webhook-cert
+          readOnly: true
+      serviceAccountName: admission-webhook-service-account
+      volumes:
+      - name: webhook-cert
+        secret:
+          secretName: webhook-certs

@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  JWA_APP_SECURE_COOKIES: 'true'
+  JWA_CLUSTER_DOMAIN: cluster.local
+  JWA_PREFIX: /jupyter
+  JWA_UI: default
+  JWA_USERID_HEADER: kubeflow-userid
+  JWA_USERID_PREFIX: ''
+kind: ConfigMap
+metadata:
+  labels:
+    app: jupyter-web-app
+    kustomize.component: jupyter-web-app
+  name: jupyter-web-app-parameters-42k97gcbmb
+  namespace: kubeflow

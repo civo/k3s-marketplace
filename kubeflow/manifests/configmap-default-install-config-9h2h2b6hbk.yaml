@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  profile-name: kubeflow-user-example-com
+  user: user@example.com
+kind: ConfigMap
+metadata:
+  name: default-install-config-9h2h2b6hbk

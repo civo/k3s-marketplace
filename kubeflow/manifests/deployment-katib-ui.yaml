@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    katib.kubeflow.org/component: ui
+  name: katib-ui
+  namespace: kubeflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      katib.kubeflow.org/component: ui
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
+      labels:
+        katib.kubeflow.org/component: ui
+    spec:
+      containers:
+      - args:
+        - --port=8080
+        command:
+        - ./katib-ui
+        env:
+        - name: KATIB_CORE_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: APP_DISABLE_AUTH
+          value: 'false'
+        image: docker.io/kubeflowkatib/katib-ui:v0.15.0
+        name: katib-ui
+        ports:
+        - containerPort: 8080
+          name: ui
+      serviceAccountName: katib-ui

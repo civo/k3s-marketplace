@@ -86,7 +86,7 @@ spec:
         app: ferretdb
     spec:
       containers:
-        - image: ghcr.io/ferretdb/ferretdb:1.24.0
+        - image: ghcr.io/ferretdb/ferretdb:2
           name: ferretdb
           env:
             - name: FERRETDB_POSTGRESQL_URL

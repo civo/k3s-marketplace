@@ -8651,7 +8651,7 @@ spec:
       priorityClassName: system-cluster-critical
       containers:
         - name: volcano-scheduler
-          image: volcanosh/vc-scheduler:v1.10.0
+          image: volcanosh/vc-scheduler:v1.11.0
           args:
             - --logtostderr
             - --scheduler-conf=/volcano.scheduler/volcano-scheduler.conf

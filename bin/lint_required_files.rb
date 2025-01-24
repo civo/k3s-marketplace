@@ -44,6 +44,11 @@ Dir.glob("*").each do |dirname|
     exit_code = 1
   end
 
+  unless (File.exist?("#{dirname}/uninstall.sh") || File.exist?("#{dirname}/app.yaml"))
+    puts "#{dirname} doesn't contain an app.yaml or uninstall.sh (one or the other is required)"
+    exit_code = 1
+  end
+
   unless (File.exist?("#{dirname}/install.sh") || File.exist?("#{dirname}/app.yaml"))
     yaml = YAML.load_file("#{dirname}/manifest.yaml")
 

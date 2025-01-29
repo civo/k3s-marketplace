@@ -6,4 +6,6 @@ helm repo update
 
 kubectl create namespace sonarqube
 
-helm upgrade --install -n sonarqube sonarqube sonarqube/sonarqube --set service.type=LoadBalancer
+export MONITORING_PASSCODE="NotEnabled"
+
+helm upgrade --install -n sonarqube sonarqube sonarqube/sonarqube --set community.enabled=true,service.type=LoadBalancer,monitoringPasscode=$MONITORING_PASSCODE

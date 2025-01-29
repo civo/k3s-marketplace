@@ -1,0 +1,7 @@
+---
+name: k8sgpt-operator
+version: v0.1.4
+maintainer: "@milindchawre"
+description: This k8sgpt-operator is designed to enable K8sGPT within a Kubernetes cluster.
+url: https://github.com/k8sgpt-ai/k8sgpt-operator
+category: monitoring

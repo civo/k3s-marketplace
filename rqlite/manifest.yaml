@@ -1,7 +1,7 @@
 ---
 name: rqlite
 title: rqlite
-version: 8.36.5
+version: 8.36.11
 maintainer: "shawn@nebarilabs.com"
 description: "The lightweight, distributed relational database built on SQLite."
 url: https://rqlite.io

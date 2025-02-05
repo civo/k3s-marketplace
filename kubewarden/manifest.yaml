@@ -5,6 +5,6 @@ description: "Kubewarden is a Kubernetes Dynamic Admission Controller that valid
 maintainer: "cncf-kubewarden-maintainers@lists.cncf.io"
 url: https://www.kubewarden.io/
 category: security
-version: v1.20.0
+version: v1.21.0
 dependencies:
   - cert-manager

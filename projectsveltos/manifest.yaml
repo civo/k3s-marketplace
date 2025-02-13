@@ -1,7 +1,7 @@
 ---
 name: projectsveltos
 title: "Projectsveltos"
-version: "v0.40.0"
+version: "v0.47.0"
 maintainer: "Projectsveltos Authors"
 description: Kubernetes controller to deploy add-ons and applications in a fleet of clusters.
 url: https://projectsveltos.github.io/sveltos/
